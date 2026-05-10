@@ -26,6 +26,11 @@ interface EndpointGroup {
   matcher: (name: string) => boolean;
 }
 
+interface GroupAggregate {
+  total: number;
+  selectedImageCount: number;
+}
+
 const groups: EndpointGroup[] = [
   {
     key: "all",
@@ -106,19 +111,42 @@ function normalizeRepositories(entries: DockerHubRepository[]): RepositoryStats[
   return normalized;
 }
 
-function buildEndpointPayload(group: EndpointGroup, repositories: RepositoryStats[], generatedAt: string) {
+function computeGroupAggregate(group: EndpointGroup, repositories: RepositoryStats[]): GroupAggregate {
   const selected = repositories.filter((repo) => group.matcher(repo.name));
   const total = selected.reduce((sum, repo) => sum + repo.pullCount, 0);
 
   return {
+    total,
+    selectedImageCount: selected.length,
+  };
+}
+
+function buildShieldsPayload(group: EndpointGroup, aggregate: GroupAggregate) {
+  return {
     schemaVersion: 1,
     label: group.label,
-    message: humanizeCount(total),
+    message: humanizeCount(aggregate.total),
     color: group.color,
     cacheSeconds: CACHE_SECONDS,
-    pull_count: total,
+  };
+}
+
+function buildStatsPayload(
+  group: EndpointGroup,
+  repositories: RepositoryStats[],
+  aggregate: GroupAggregate,
+  generatedAt: string,
+) {
+
+  return {
+    schemaVersion: 1,
+    label: group.label,
+    message: humanizeCount(aggregate.total),
+    color: group.color,
+    cacheSeconds: CACHE_SECONDS,
+    pull_count: aggregate.total,
     group: group.key,
-    selected_image_count: selected.length,
+    selected_image_count: aggregate.selectedImageCount,
     total_image_count: repositories.length,
     generated_at: generatedAt,
     source: SOURCE_URL,
@@ -132,9 +160,15 @@ async function writeOutputs(repositories: RepositoryStats[]): Promise<void> {
   const generatedAt = new Date().toISOString();
 
   for (const group of groups) {
-    const payload = buildEndpointPayload(group, repositories, generatedAt);
-    const outputPath = path.join(outputDir, `${group.key}.json`);
-    await writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`, "utf-8");
+    const aggregate = computeGroupAggregate(group, repositories);
+    const shieldsPayload = buildShieldsPayload(group, aggregate);
+    const statsPayload = buildStatsPayload(group, repositories, aggregate, generatedAt);
+
+    const shieldsPath = path.join(outputDir, `${group.key}.json`);
+    await writeFile(shieldsPath, `${JSON.stringify(shieldsPayload, null, 2)}\n`, "utf-8");
+
+    const statsPath = path.join(outputDir, `${group.key}.stats.json`);
+    await writeFile(statsPath, `${JSON.stringify(statsPayload, null, 2)}\n`, "utf-8");
   }
 }
 

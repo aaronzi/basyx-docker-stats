@@ -8,13 +8,20 @@ Expected base URL:
 
 - [https://docker-stats.basyx.org/all.json](https://docker-stats.basyx.org/all.json)
 - [https://docker-stats.basyx.org/go.json](https://docker-stats.basyx.org/go.json)
+- [https://docker-stats.basyx.org/all.stats.json](https://docker-stats.basyx.org/all.stats.json)
+- [https://docker-stats.basyx.org/go.stats.json](https://docker-stats.basyx.org/go.stats.json)
 
 Current groups:
 
 - all: total pulls for all `eclipsebasyx` images
 - go: total pulls for images with a strict `-go` suffix
 
-Each endpoint contains:
+Payload split:
+
+- `all.json` and `go.json`: strict Shields-compatible schema only
+- `all.stats.json` and `go.stats.json`: extended payload including `pull_count` and metadata
+
+Stats endpoint (`*.stats.json`) contains:
 
 - Shields endpoint fields: `schemaVersion`, `label`, `message`, `color`
 - Raw numeric field: `pull_count`
