@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "label": "docker pulls",
+  "message": "3.2M",
+  "color": "blue",
+  "cacheSeconds": 86400,
+  "pull_count": 3227214,
+  "group": "all",
+  "selected_image_count": 41,
+  "total_image_count": 41,
+  "generated_at": "2026-05-10T09:38:00.919Z",
+  "source": "https://hub.docker.com/v2/repositories/eclipsebasyx?page_size=100"
+}

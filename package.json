@@ -1,0 +1,15 @@
+{
+  "name": "basyx-docker-stats",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generate GitHub Pages JSON endpoints for Eclipse BaSyx Docker pull stats",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "generate": "tsx scripts/generate-stats.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.19",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
