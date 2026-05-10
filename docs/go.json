@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "label": "docker pulls (-go)",
+  "label": "docker pulls go",
   "message": "56.3k",
   "color": "teal",
   "cacheSeconds": 86400

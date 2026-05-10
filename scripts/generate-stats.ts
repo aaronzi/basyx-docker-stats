@@ -40,7 +40,7 @@ const groups: EndpointGroup[] = [
   },
   {
     key: "go",
-    label: "docker pulls (-go)",
+    label: "docker pulls go",
     color: "teal",
     matcher: (name) => name.endsWith("-go"),
   },
