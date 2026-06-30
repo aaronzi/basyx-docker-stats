@@ -4,10 +4,10 @@
   "message": "3.4M",
   "color": "blue",
   "cacheSeconds": 86400,
-  "pull_count": 3453744,
+  "pull_count": 3460741,
   "group": "all",
   "selected_image_count": 44,
   "total_image_count": 44,
-  "generated_at": "2026-06-29T04:54:15.302Z",
+  "generated_at": "2026-06-30T04:42:30.927Z",
   "source": "https://hub.docker.com/v2/repositories/eclipsebasyx?page_size=100"
 }
