@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "label": "docker pulls",
-  "message": "256k",
+  "message": "259k",
   "color": "teal",
   "cacheSeconds": 86400
 }
